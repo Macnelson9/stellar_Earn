@@ -3,6 +3,7 @@
 import { useState, Suspense, useMemo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Sidebar } from '@/components/layout/Sidebar';
+import { Header } from '@/components/layout/Header';
 import { StatusFilter } from '@/components/submission/StatusFilter';
 import { SubmissionSearch } from '@/components/submission/SubmissionSearch';
 import { SubmissionSummaryCards } from '@/components/submission/SubmissionSummaryCards';
@@ -108,7 +109,9 @@ function SubmissionsContent() {
   return (
     <div className="flex min-h-screen bg-white dark:bg-zinc-900 lg:h-screen lg:flex-row">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto lg:ml-0">
+      <div className="flex flex-1 flex-col">
+        <Header />
+        <main className="flex-1 overflow-y-auto">
         <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="mb-6 lg:mb-8">
@@ -192,6 +195,7 @@ function SubmissionsContent() {
         />
         </div>
       </main>
+      </div>
     </div>
   );
 }
@@ -202,7 +206,9 @@ export default function SubmissionsPage() {
       fallback={
         <div className="flex h-screen bg-white dark:bg-zinc-900">
           <Sidebar />
-          <main className="flex-1 overflow-y-auto">
+          <div className="flex flex-1 flex-col">
+            <Header />
+            <main className="flex-1 overflow-y-auto">
             <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
               <div className="mb-8">
                 <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
@@ -219,6 +225,7 @@ export default function SubmissionsPage() {
               </div>
             </div>
           </main>
+          </div>
         </div>
       }
     >

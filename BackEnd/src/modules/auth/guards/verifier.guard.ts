@@ -9,11 +9,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Quest } from '../../quests/entities/quest.entity';
 import { User } from '../../users/entities/user.entity';
+import { UserRole } from '../enums/user-role.enum';
 
 interface RequestUser {
   id: string;
   stellarAddress: string;
-  role: string;
+  role: UserRole;
 }
 
 interface AuthenticatedRequest {
@@ -45,6 +46,11 @@ export class VerifierGuard implements CanActivate {
       throw new BadRequestException('Quest ID is required');
     }
 
+    // Admins can verify any submission
+    if (user.role === UserRole.ADMIN) {
+      return true;
+    }
+
     const quest = await this.questRepository.findOne({
       where: { id: questId },
       relations: ['verifiers', 'creator'],
@@ -58,22 +64,13 @@ export class VerifierGuard implements CanActivate {
       (v: { id: string }) => v.id === user.id,
     );
     const isCreator = quest.creator?.id === user.id;
-    const isAdmin = await this.checkAdminRole(user.id);
 
-    if (!isVerifier && !isCreator && !isAdmin) {
+    if (!isVerifier && !isCreator) {
       throw new ForbiddenException(
         'You are not authorized to verify submissions for this quest',
       );
     }
 
     return true;
-  }
-
-  private async checkAdminRole(userId: string): Promise<boolean> {
-    const user = await this.userRepository.findOne({
-      where: { id: userId },
-    });
-
-    return user?.role === 'ADMIN';
   }
 }

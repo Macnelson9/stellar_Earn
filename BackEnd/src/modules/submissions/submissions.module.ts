@@ -7,6 +7,7 @@ import { StellarModule } from '../stellar/stellar.module';
 import { NotificationsModule } from '../notifications/notifications.module';
 import { Quest } from '../quests/entities/quest.entity';
 import { User } from '../users/entities/user.entity';
+import { VerifierGuard } from '../auth/guards/verifier.guard';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { User } from '../users/entities/user.entity';
     NotificationsModule,
   ],
   controllers: [SubmissionsController],
-  providers: [SubmissionsService],
+  providers: [SubmissionsService, VerifierGuard],
   exports: [SubmissionsService],
 })
 export class SubmissionsModule {}

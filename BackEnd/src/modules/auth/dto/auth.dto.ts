@@ -69,25 +69,10 @@ export class TokenResponseDto {
 
 export class UserResponseDto {
     @ApiProperty()
-    id: string;
-
-    @ApiProperty()
     stellarAddress: string;
-
-    @ApiProperty({ required: false })
-    username: string | null;
-
-    @ApiProperty({ required: false })
-    email: string | null;
 
     @ApiProperty()
     role: string;
-
-    @ApiProperty()
-    xp: number;
-
-    @ApiProperty()
-    level: number;
 }
 
 export class RefreshTokenDto {

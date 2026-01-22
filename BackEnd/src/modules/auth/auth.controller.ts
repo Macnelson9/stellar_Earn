@@ -10,9 +10,9 @@ import {
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
+import type { AuthUser } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
-import { User } from '../users/entities/user.entity';
 import {
     ChallengeRequestDto,
     ChallengeResponseDto,
@@ -84,15 +84,10 @@ export class AuthController {
         type: UserResponseDto,
     })
     @ApiResponse({ status: 401, description: 'Unauthorized' })
-    async getProfile(@CurrentUser() user: User): Promise<UserResponseDto> {
+    async getProfile(@CurrentUser() user: AuthUser): Promise<UserResponseDto> {
         return {
-            id: user.id,
             stellarAddress: user.stellarAddress,
-            username: user.username,
-            email: user.email,
             role: user.role,
-            xp: user.xp,
-            level: user.level,
         };
     }
 
@@ -103,8 +98,8 @@ export class AuthController {
     @ApiOperation({ summary: 'Logout current session' })
     @ApiResponse({ status: 200, description: 'Logged out successfully' })
     @ApiResponse({ status: 401, description: 'Unauthorized' })
-    async logout(@CurrentUser() user: User): Promise<{ message: string }> {
-        await this.authService.revokeToken(user.id);
+    async logout(@CurrentUser() user: AuthUser): Promise<{ message: string }> {
+        await this.authService.revokeToken(user.stellarAddress);
         return { message: 'Logged out successfully' };
     }
 
@@ -115,8 +110,8 @@ export class AuthController {
     @ApiOperation({ summary: 'Logout all sessions' })
     @ApiResponse({ status: 200, description: 'All sessions logged out' })
     @ApiResponse({ status: 401, description: 'Unauthorized' })
-    async logoutAll(@CurrentUser() user: User): Promise<{ message: string }> {
-        await this.authService.revokeToken(user.id);
+    async logoutAll(@CurrentUser() user: AuthUser): Promise<{ message: string }> {
+        await this.authService.revokeToken(user.stellarAddress);
         return { message: 'All sessions logged out successfully' };
     }
 }

@@ -2,8 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
-import { UsersService } from '../../users/users.service';
-import { User } from '../../users/entities/user.entity';
+import { AuthService, AuthUser } from '../auth.service';
 
 export interface JwtPayload {
     sub: string;
@@ -15,7 +14,7 @@ export interface JwtPayload {
 export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(
         private readonly configService: ConfigService,
-        private readonly usersService: UsersService,
+        private readonly authService: AuthService,
     ) {
         const secret = configService.get<string>('JWT_SECRET');
         if (!secret) {
@@ -29,13 +28,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         });
     }
 
-    async validate(payload: JwtPayload): Promise<User> {
-        const user = await this.usersService.findById(payload.sub);
-
-        if (!user) {
-            throw new UnauthorizedException('User not found');
-        }
-
-        return user;
+    async validate(payload: JwtPayload): Promise<AuthUser> {
+        return this.authService.validateUser(payload.stellarAddress);
     }
 }

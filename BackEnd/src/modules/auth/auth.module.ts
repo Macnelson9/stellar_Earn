@@ -7,7 +7,6 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { RefreshToken } from './entities/refresh-token.entity';
-import { UsersModule } from '../users/users.module';
 
 @Module({
     imports: [
@@ -32,7 +31,6 @@ import { UsersModule } from '../users/users.module';
             inject: [ConfigService],
         }),
         TypeOrmModule.forFeature([RefreshToken]),
-        UsersModule,
     ],
     controllers: [AuthController],
     providers: [AuthService, JwtStrategy],

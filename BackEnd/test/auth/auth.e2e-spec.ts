@@ -136,7 +136,6 @@ describe('Authentication (e2e)', () => {
                 .expect(200)
                 .expect((res) => {
                     expect(res.body.stellarAddress).toBe(stellarAddress);
-                    expect(res.body).toHaveProperty('id');
                     expect(res.body).toHaveProperty('role');
                 });
         });
@@ -197,16 +196,18 @@ describe('Authentication (e2e)', () => {
     });
 
     describe('/auth/logout (POST)', () => {
-        it('should logout and invalidate token', async () => {
+        it('should logout and invalidate refresh tokens', async () => {
+            const oldRefreshToken = refreshToken;
+
             await request(app.getHttpServer())
                 .post('/auth/logout')
                 .set('Authorization', `Bearer ${accessToken}`)
                 .expect(200);
 
-            // Token should no longer work
+            // Refresh token should no longer work
             return request(app.getHttpServer())
-                .get('/auth/profile')
-                .set('Authorization', `Bearer ${accessToken}`)
+                .post('/auth/refresh')
+                .send({ refreshToken: oldRefreshToken })
                 .expect(401);
         });
     });

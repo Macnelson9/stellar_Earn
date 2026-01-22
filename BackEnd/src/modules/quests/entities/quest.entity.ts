@@ -18,12 +18,12 @@ export class Quest {
   @Column()
   rewardAsset: string;
 
-  @Column()
+  @Column({ nullable: true })
   createdBy: string;
 
   @OneToMany(() => Submission, (submission) => submission.quest)
   submissions: Submission[];
 
-  verifiers: any[];
-  creator: any;
+  verifiers: { id: string }[];
+  creator: { id: string } | null;
 }

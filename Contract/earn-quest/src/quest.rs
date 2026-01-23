@@ -83,6 +83,11 @@ pub fn update_quest_status(
         return Err(Error::Unauthorized);
     }
 
+    // Validate status transition - can't change from Completed or Expired
+    if quest.status == QuestStatus::Completed || quest.status == QuestStatus::Expired {
+        return Err(Error::InvalidStatusTransition);
+    }
+
     // Update status
     quest.status = new_status;
     storage::set_quest(env, &quest);

@@ -33,10 +33,12 @@ fn test_register_quest_success() {
         &reward_amount,
         &verifier,
         &deadline,
+        &10, // max_participants
     );
 
-    // Verify quest exists
-    assert!(client.quest_exists(&quest_id));
+    // Verify quest exists by getting it
+    let quest_result = client.try_get_quest(&quest_id);
+    assert!(quest_result.is_ok());
 
     // Get quest and verify details
     let quest = client.get_quest(&quest_id);
@@ -66,6 +68,7 @@ fn test_register_quest_duplicate_fails() {
         &1000_i128,
         &verifier,
         &deadline,
+        &10,
     );
 
     // Try to register same quest again - should panic
@@ -76,6 +79,7 @@ fn test_register_quest_duplicate_fails() {
         &1000_i128,
         &verifier,
         &deadline,
+        &10,
     );
     assert!(result.is_err());
 }
@@ -98,6 +102,7 @@ fn test_register_quest_invalid_reward_fails() {
         &0_i128,
         &verifier,
         &deadline,
+        &10,
     );
     assert!(result.is_err());
 }
@@ -120,10 +125,11 @@ fn test_pause_quest() {
         &1000_i128,
         &verifier,
         &deadline,
+        &10,
     );
 
     // Pause quest
-    client.pause_quest(&quest_id, &creator);
+    client.update_quest_status(&quest_id, &creator, &QuestStatus::Paused);
 
     // Verify status changed
     let quest = client.get_quest(&quest_id);
@@ -148,11 +154,12 @@ fn test_resume_quest() {
         &1000_i128,
         &verifier,
         &deadline,
+        &10,
     );
-    client.pause_quest(&quest_id, &creator);
+    client.update_quest_status(&quest_id, &creator, &QuestStatus::Paused);
 
     // Resume quest
-    client.resume_quest(&quest_id, &creator);
+    client.update_quest_status(&quest_id, &creator, &QuestStatus::Active);
 
     // Verify status changed back
     let quest = client.get_quest(&quest_id);
@@ -177,10 +184,11 @@ fn test_complete_quest() {
         &1000_i128,
         &verifier,
         &deadline,
+        &10,
     );
 
     // Complete quest
-    client.complete_quest(&quest_id, &creator);
+    client.update_quest_status(&quest_id, &creator, &QuestStatus::Completed);
 
     // Verify status changed
     let quest = client.get_quest(&quest_id);
@@ -205,11 +213,12 @@ fn test_unauthorized_status_update() {
         &1000_i128,
         &verifier,
         &deadline,
+        &10,
     );
 
     // Try to pause with non-creator - should fail
     let other = Address::generate(&env);
-    let result = client.try_pause_quest(&quest_id, &other);
+    let result = client.try_update_quest_status(&quest_id, &other, &QuestStatus::Paused);
     assert!(result.is_err());
 }
 
@@ -231,11 +240,12 @@ fn test_invalid_status_transition() {
         &1000_i128,
         &verifier,
         &deadline,
+        &10,
     );
-    client.complete_quest(&quest_id, &creator);
+    client.update_quest_status(&quest_id, &creator, &QuestStatus::Completed);
 
     // Try to pause completed quest - should fail
-    let result = client.try_pause_quest(&quest_id, &creator);
+    let result = client.try_update_quest_status(&quest_id, &creator, &QuestStatus::Paused);
     assert!(result.is_err());
 }
 
@@ -257,16 +267,19 @@ fn test_is_quest_active() {
         &1000_i128,
         &verifier,
         &deadline,
+        &10,
     );
 
     // Should be active
-    assert!(client.is_quest_active(&quest_id));
+    let quest = client.get_quest(&quest_id);
+    assert_eq!(quest.status, QuestStatus::Active);
 
     // Pause quest
-    client.pause_quest(&quest_id, &creator);
+    client.update_quest_status(&quest_id, &creator, &QuestStatus::Paused);
 
     // Should not be active
-    assert!(!client.is_quest_active(&quest_id));
+    let quest = client.get_quest(&quest_id);
+    assert_eq!(quest.status, QuestStatus::Paused);
 }
 
 #[test]
@@ -280,7 +293,8 @@ fn test_quest_exists() {
     let deadline = env.ledger().timestamp() + 86400;
 
     // Should not exist yet
-    assert!(!client.quest_exists(&quest_id));
+    let result = client.try_get_quest(&quest_id);
+    assert!(result.is_err());
 
     // Register quest
     client.register_quest(
@@ -290,8 +304,10 @@ fn test_quest_exists() {
         &1000_i128,
         &verifier,
         &deadline,
+        &10,
     );
 
     // Should exist now
-    assert!(client.quest_exists(&quest_id));
+    let result = client.try_get_quest(&quest_id);
+    assert!(result.is_ok());
 }

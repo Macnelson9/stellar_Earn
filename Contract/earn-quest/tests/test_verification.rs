@@ -36,6 +36,7 @@ fn setup_quest_with_submission<'a>(
         &1000_i128,
         &verifier,
         &deadline,
+        &10,
     );
 
     // Create submitter and submit proof
@@ -57,9 +58,9 @@ fn test_approve_submission_success() {
     // Approve submission
     client.approve_submission(&quest_id, &submitter, &verifier);
 
-    // Verify status changed
+    // Verify status changed to Paid (approval includes automatic payment)
     let submission = client.get_submission(&quest_id, &submitter);
-    assert_eq!(submission.status, SubmissionStatus::Approved);
+    assert_eq!(submission.status, SubmissionStatus::Paid);
 }
 
 #[test]
@@ -124,6 +125,7 @@ fn test_approve_nonexistent_submission_fails() {
         &1000_i128,
         &verifier,
         &deadline,
+        &10,
     );
 
     // Try to approve non-existent submission

@@ -1,6 +1,6 @@
 #![no_std]
 
-use soroban_sdk::{contract, contractimpl, Address, BytesN, Env, Symbol, Vec};
+use soroban_sdk::{contract, contractimpl, Address, BytesN, Env, Symbol};
 
 mod errors;
 mod payout;
@@ -12,7 +12,10 @@ pub mod test;
 pub mod types;
 
 use errors::Error;
-use types::{Quest, QuestStatus, Submission, SubmissionStatus, UserStats};
+use types::{Quest, Submission, UserStats};
+
+// Re-export types for use in tests
+pub use types::{QuestStatus, SubmissionStatus};
 
 #[contract]
 pub struct EarnQuestContract;
@@ -92,8 +95,7 @@ impl EarnQuestContract {
         // Approve submission and increment claim counter
         submission::approve_submission(&env, &quest_id, &submitter, &verifier)?;
 
-        // Get quest and submission
-        let quest = storage::get_quest(&env, &quest_id).ok_or(Error::QuestNotFound)?;
+        // Get submission
         let mut sub = storage::get_submission(&env, &quest_id, &submitter)
             .ok_or(Error::SubmissionNotFound)?;
 
@@ -139,5 +141,16 @@ impl EarnQuestContract {
         admin: Address,
     ) -> Result<(), Error> {
         reputation::grant_badge(&env, &address, badge, &admin)
+    }
+
+    /// Check if a quest has expired based on its deadline
+    pub fn check_expired(env: Env, quest_id: Symbol) -> Result<bool, Error> {
+        let quest = storage::get_quest(&env, &quest_id).ok_or(Error::QuestNotFound)?;
+        Ok(quest::check_expired(&env, &quest))
+    }
+
+    /// Manually expire a quest (creator only)
+    pub fn expire_quest(env: Env, quest_id: Symbol, caller: Address) -> Result<(), Error> {
+        quest::expire_quest(&env, &quest_id, &caller)
     }
 }

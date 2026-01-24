@@ -97,11 +97,7 @@ export class DateRangeUtil {
   /**
    * Check if a date is within a range
    */
-  static isDateInRange(
-    date: Date,
-    startDate: Date,
-    endDate: Date,
-  ): boolean {
+  static isDateInRange(date: Date, startDate: Date, endDate: Date): boolean {
     return date >= startDate && date <= endDate;
   }
 }

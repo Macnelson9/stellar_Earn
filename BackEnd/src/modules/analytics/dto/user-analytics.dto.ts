@@ -96,6 +96,9 @@ export class UserAnalyticsDto {
   @ApiProperty({ description: 'Cohort analysis', type: CohortAnalysis })
   cohortAnalysis: CohortAnalysis;
 
-  @ApiProperty({ description: 'User growth time-series', type: [ActivityDataPoint] })
+  @ApiProperty({
+    description: 'User growth time-series',
+    type: [ActivityDataPoint],
+  })
   userGrowth: ActivityDataPoint[];
 }

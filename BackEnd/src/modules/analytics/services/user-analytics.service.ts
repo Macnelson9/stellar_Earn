@@ -93,7 +93,9 @@ export class UserAnalyticsService {
     });
 
     const approvedSubmissions = submissions.filter(
-      (s) => s.status === SubmissionStatus.APPROVED || s.status === SubmissionStatus.PAID,
+      (s) =>
+        s.status === SubmissionStatus.APPROVED ||
+        s.status === SubmissionStatus.PAID,
     );
 
     const approvalRate = ConversionUtil.calculateApprovalRate(
@@ -119,9 +121,10 @@ export class UserAnalyticsService {
 
     const lastActiveAt =
       submissions.length > 0
-        ? submissions.reduce((latest, s) =>
-            s.submittedAt > latest ? s.submittedAt : latest,
-          submissions[0].submittedAt)
+        ? submissions.reduce(
+            (latest, s) => (s.submittedAt > latest ? s.submittedAt : latest),
+            submissions[0].submittedAt,
+          )
         : user.createdAt;
 
     const activityHistory = await this.getUserActivityHistory(user.id);
@@ -177,11 +180,8 @@ export class UserAnalyticsService {
         metrics.sort((a, b) => b.questsCompleted - a.questsCompleted);
         break;
       case 'total_rewards':
-        metrics.sort(
-          (a, b) =>
-            BigInt(b.totalRewardsEarned) > BigInt(a.totalRewardsEarned)
-              ? 1
-              : -1,
+        metrics.sort((a, b) =>
+          BigInt(b.totalRewardsEarned) > BigInt(a.totalRewardsEarned) ? 1 : -1,
         );
         break;
       case 'created_at':

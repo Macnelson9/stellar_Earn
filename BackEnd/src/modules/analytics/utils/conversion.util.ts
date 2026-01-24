@@ -60,10 +60,7 @@ export class ConversionUtil {
    * @param total Total number of opportunities
    * @returns Conversion rate (0-100) with 2 decimal places
    */
-  static calculateConversionRate(
-    conversions: number,
-    total: number,
-  ): number {
+  static calculateConversionRate(conversions: number, total: number): number {
     if (total === 0) return 0;
     return Math.round((conversions / total) * 100 * 100) / 100;
   }

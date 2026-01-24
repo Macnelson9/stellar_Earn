@@ -5,7 +5,10 @@ import { User } from '../entities/user.entity';
 import { Quest, QuestStatus } from '../entities/quest.entity';
 import { Submission, SubmissionStatus } from '../entities/submission.entity';
 import { Payout } from '../entities/payout.entity';
-import { PlatformStatsDto, TimeSeriesDataPoint } from '../dto/platform-stats.dto';
+import {
+  PlatformStatsDto,
+  TimeSeriesDataPoint,
+} from '../dto/platform-stats.dto';
 import { AnalyticsQueryDto, Granularity } from '../dto/analytics-query.dto';
 import { DateRangeUtil } from '../utils/date-range.util';
 import { ConversionUtil } from '../utils/conversion.util';
@@ -67,7 +70,11 @@ export class PlatformAnalyticsService {
           this.getQuestsByStatus(startDate, endDate),
           this.getSubmissionsByStatus(startDate, endDate),
           this.getAllSubmissions(startDate, endDate),
-          this.getTimeSeries(startDate, endDate, query.granularity || Granularity.DAY),
+          this.getTimeSeries(
+            startDate,
+            endDate,
+            query.granularity || Granularity.DAY,
+          ),
         ]);
 
         const approvalRate = ConversionUtil.calculateApprovalRate(
@@ -108,7 +115,10 @@ export class PlatformAnalyticsService {
     });
   }
 
-  private async getTotalQuests(startDate: Date, endDate: Date): Promise<number> {
+  private async getTotalQuests(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<number> {
     return this.questRepository.count({
       where: {
         createdAt: { $gte: startDate, $lte: endDate } as any,
@@ -116,7 +126,10 @@ export class PlatformAnalyticsService {
     });
   }
 
-  private async getTotalSubmissions(startDate: Date, endDate: Date): Promise<number> {
+  private async getTotalSubmissions(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<number> {
     return this.submissionRepository.count({
       where: {
         submittedAt: { $gte: startDate, $lte: endDate } as any,
@@ -124,7 +137,10 @@ export class PlatformAnalyticsService {
     });
   }
 
-  private async getApprovedSubmissions(startDate: Date, endDate: Date): Promise<number> {
+  private async getApprovedSubmissions(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<number> {
     return this.submissionRepository.count({
       where: {
         submittedAt: { $gte: startDate, $lte: endDate } as any,
@@ -133,7 +149,10 @@ export class PlatformAnalyticsService {
     });
   }
 
-  private async getTotalPayouts(startDate: Date, endDate: Date): Promise<number> {
+  private async getTotalPayouts(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<number> {
     return this.payoutRepository.count({
       where: {
         paidAt: { $gte: startDate, $lte: endDate } as any,
@@ -141,7 +160,10 @@ export class PlatformAnalyticsService {
     });
   }
 
-  private async getTotalRewardsDistributed(startDate: Date, endDate: Date): Promise<string> {
+  private async getTotalRewardsDistributed(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<string> {
     const result = await this.payoutRepository
       .createQueryBuilder('payout')
       .select('SUM(CAST(payout.amount AS BIGINT))', 'total')
@@ -152,7 +174,10 @@ export class PlatformAnalyticsService {
     return result?.total?.toString() || '0';
   }
 
-  private async getActiveUsers(startDate: Date, endDate: Date): Promise<number> {
+  private async getActiveUsers(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<number> {
     const result = await this.submissionRepository
       .createQueryBuilder('submission')
       .select('COUNT(DISTINCT submission.userId)', 'count')
@@ -211,7 +236,10 @@ export class PlatformAnalyticsService {
     return result;
   }
 
-  private async getAllSubmissions(startDate: Date, endDate: Date): Promise<Submission[]> {
+  private async getAllSubmissions(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<Submission[]> {
     return this.submissionRepository.find({
       where: {
         submittedAt: { $gte: startDate, $lte: endDate } as any,

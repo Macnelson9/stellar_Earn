@@ -53,11 +53,7 @@ export class CacheService {
   /**
    * Wrap a function with caching logic
    */
-  async wrap<T>(
-    key: string,
-    fn: () => Promise<T>,
-    ttl?: number,
-  ): Promise<T> {
+  async wrap<T>(key: string, fn: () => Promise<T>, ttl?: number): Promise<T> {
     const cached = await this.get<T>(key);
     if (cached !== undefined) {
       return cached;

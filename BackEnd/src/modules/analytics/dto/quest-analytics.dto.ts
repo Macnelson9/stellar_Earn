@@ -29,7 +29,9 @@ export class QuestMetrics {
   @ApiProperty({ description: 'Approval rate percentage (0-100)' })
   approvalRate: number;
 
-  @ApiProperty({ description: 'Average time from submission to approval (hours)' })
+  @ApiProperty({
+    description: 'Average time from submission to approval (hours)',
+  })
   avgSubmissionToApprovalTime: number;
 
   @ApiProperty({ description: 'Total rewards paid out for this quest' })
@@ -41,7 +43,10 @@ export class QuestMetrics {
   @ApiProperty({ description: 'Conversion rate percentage' })
   conversionRate: number;
 
-  @ApiProperty({ description: 'Submission time-series data', type: [TimeSeriesDataPoint] })
+  @ApiProperty({
+    description: 'Submission time-series data',
+    type: [TimeSeriesDataPoint],
+  })
   submissionTimeSeries: TimeSeriesDataPoint[];
 }
 

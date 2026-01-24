@@ -65,7 +65,7 @@ describe('Notifications (e2e)', () => {
         message: 'Your quest has changed',
         channels: ['IN_APP'],
         metadata: {},
-      })
+      }),
     );
 
     const res = await request(app.getHttpServer())
@@ -87,7 +87,7 @@ describe('Notifications (e2e)', () => {
         message: 'You earned a reward',
         channels: ['IN_APP'],
         metadata: {},
-      })
+      }),
     );
 
     const res = await request(app.getHttpServer())
@@ -108,7 +108,7 @@ describe('Notifications (e2e)', () => {
         message: 'Submission received',
         channels: ['IN_APP'],
         metadata: {},
-      })
+      }),
     );
 
     const res = await request(app.getHttpServer())
@@ -183,7 +183,7 @@ describe('Notifications (e2e)', () => {
         metadata: {},
         isRead: true,
         readAt: oldDate,
-      })
+      }),
     );
 
     const res = await request(app.getHttpServer())

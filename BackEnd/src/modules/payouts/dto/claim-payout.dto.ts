@@ -1,4 +1,12 @@
-import { IsString, IsNotEmpty, IsUUID, IsOptional, IsEnum, IsNumber, Min } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsUUID,
+  IsOptional,
+  IsEnum,
+  IsNumber,
+  Min,
+} from 'class-validator';
 import { PayoutType } from '../entities/payout.entity';
 
 export class ClaimPayoutDto {

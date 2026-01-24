@@ -25,7 +25,7 @@ export class PayoutsService {
     @InjectRepository(Payout)
     private readonly payoutRepository: Repository<Payout>,
     private readonly configService: ConfigService,
-  ) { }
+  ) {}
 
   /**
    * Create a new payout record
@@ -136,7 +136,9 @@ export class PayoutsService {
     );
     const nodeEnv = this.configService.get<string>('NODE_ENV', 'development');
     if (nodeEnv === 'development' || nodeEnv === 'test') {
-      await new Promise((resolve) => setTimeout(resolve, nodeEnv === 'test' ? 10 : 1000));
+      await new Promise((resolve) =>
+        setTimeout(resolve, nodeEnv === 'test' ? 10 : 1000),
+      );
 
       // Mock successful response
       return {

@@ -6,10 +6,7 @@ import { PayoutsService } from './payouts.service';
 import { Payout } from './entities/payout.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Payout]),
-    ScheduleModule.forRoot(),
-  ],
+  imports: [TypeOrmModule.forFeature([Payout]), ScheduleModule.forRoot()],
   controllers: [PayoutsController],
   providers: [PayoutsService],
   exports: [PayoutsService],

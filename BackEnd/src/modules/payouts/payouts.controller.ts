@@ -40,7 +40,7 @@ import {
 @UseGuards(JwtAuthGuard, ThrottlerGuard)
 @ApiBearerAuth()
 export class PayoutsController {
-  constructor(private readonly payoutsService: PayoutsService) { }
+  constructor(private readonly payoutsService: PayoutsService) {}
 
   @Post('claim')
   @HttpCode(HttpStatus.OK)
@@ -69,7 +69,11 @@ export class PayoutsController {
     type: PayoutHistoryResponseDto,
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @ApiQuery({ name: 'status', required: false, description: 'Filter by status' })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    description: 'Filter by status',
+  })
   @ApiQuery({ name: 'type', required: false, description: 'Filter by type' })
   @ApiQuery({ name: 'page', required: false, description: 'Page number' })
   @ApiQuery({ name: 'limit', required: false, description: 'Items per page' })
@@ -158,8 +162,16 @@ export class PayoutsController {
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden - Admin only' })
-  @ApiQuery({ name: 'stellarAddress', required: false, description: 'Filter by address' })
-  @ApiQuery({ name: 'status', required: false, description: 'Filter by status' })
+  @ApiQuery({
+    name: 'stellarAddress',
+    required: false,
+    description: 'Filter by address',
+  })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    description: 'Filter by status',
+  })
   @ApiQuery({ name: 'type', required: false, description: 'Filter by type' })
   @ApiQuery({ name: 'page', required: false, description: 'Page number' })
   @ApiQuery({ name: 'limit', required: false, description: 'Items per page' })
@@ -195,7 +207,10 @@ export class PayoutsController {
     description: 'Payout retry initiated',
     type: PayoutResponseDto,
   })
-  @ApiResponse({ status: 400, description: 'Only failed payouts can be retried' })
+  @ApiResponse({
+    status: 400,
+    description: 'Only failed payouts can be retried',
+  })
   @ApiResponse({ status: 404, description: 'Payout not found' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden - Admin only' })

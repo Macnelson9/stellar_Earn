@@ -33,10 +33,8 @@ import { APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { ErrorLoggerFilter } from './common/filter/error-logger.filter';
 
-
 @Module({
   imports: [
-    
     WebhooksModule,
     ConfigModule.forRoot({
       isGlobal: true,

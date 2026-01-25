@@ -92,8 +92,7 @@ export class Payout {
   // Helper method to check if payout can be retried
   canRetry(): boolean {
     return (
-      this.status === PayoutStatus.FAILED &&
-      this.retryCount < this.maxRetries
+      this.status === PayoutStatus.FAILED && this.retryCount < this.maxRetries
     );
   }
 

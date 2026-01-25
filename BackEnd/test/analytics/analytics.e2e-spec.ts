@@ -5,8 +5,14 @@ import { AppModule } from '../../src/app.module';
 import { Keypair } from 'stellar-sdk';
 import { DataSource } from 'typeorm';
 import { User } from '../../src/modules/analytics/entities/user.entity';
-import { Quest, QuestStatus } from '../../src/modules/analytics/entities/quest.entity';
-import { Submission, SubmissionStatus } from '../../src/modules/analytics/entities/submission.entity';
+import {
+  Quest,
+  QuestStatus,
+} from '../../src/modules/analytics/entities/quest.entity';
+import {
+  Submission,
+  SubmissionStatus,
+} from '../../src/modules/analytics/entities/submission.entity';
 import { Payout } from '../../src/modules/analytics/entities/payout.entity';
 
 describe('Analytics (e2e)', () => {
@@ -149,10 +155,10 @@ describe('Analytics (e2e)', () => {
           i % 4 === 0
             ? SubmissionStatus.APPROVED
             : i % 4 === 1
-            ? SubmissionStatus.REJECTED
-            : i % 4 === 2
-            ? SubmissionStatus.PAID
-            : SubmissionStatus.PENDING,
+              ? SubmissionStatus.REJECTED
+              : i % 4 === 2
+                ? SubmissionStatus.PAID
+                : SubmissionStatus.PENDING,
         submittedAt: new Date(Date.now() - i * 12 * 60 * 60 * 1000),
         reviewedAt:
           i % 4 !== 3

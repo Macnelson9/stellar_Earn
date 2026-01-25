@@ -5,9 +5,9 @@ import { QuestsController } from './quests.controller';
 import { Quest } from './entities/quest.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Quest])],
-    controllers: [QuestsController],
-    providers: [QuestsService],
-    exports: [QuestsService],
+  imports: [TypeOrmModule.forFeature([Quest])],
+  controllers: [QuestsController],
+  providers: [QuestsService],
+  exports: [QuestsService],
 })
-export class QuestsModule { }
+export class QuestsModule {}

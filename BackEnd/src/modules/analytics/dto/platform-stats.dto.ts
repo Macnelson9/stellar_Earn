@@ -73,7 +73,9 @@ export class PlatformStatsDto {
   @ApiProperty({ description: 'Overall submission approval rate (0-100)' })
   approvalRate: number;
 
-  @ApiProperty({ description: 'Average time from submission to approval (hours)' })
+  @ApiProperty({
+    description: 'Average time from submission to approval (hours)',
+  })
   avgApprovalTime: number;
 
   @ApiProperty({ description: 'Number of active users in date range' })
@@ -85,6 +87,9 @@ export class PlatformStatsDto {
   @ApiProperty({ description: 'Quest status breakdown', type: QuestsByStatus })
   questsByStatus: QuestsByStatus;
 
-  @ApiProperty({ description: 'Submission status breakdown', type: SubmissionsByStatus })
+  @ApiProperty({
+    description: 'Submission status breakdown',
+    type: SubmissionsByStatus,
+  })
   submissionsByStatus: SubmissionsByStatus;
 }

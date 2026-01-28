@@ -30,20 +30,13 @@
           "function": {
             "contract_fn": {
               "contract_address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM",
-              "function_name": "grant_badge",
+              "function_name": "add_admin",
               "args": [
                 {
                   "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFCT4"
                 },
                 {
                   "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHK3M"
-                },
-                {
-                  "vec": [
-                    {
-                      "symbol": "Rookie"
-                    }
-                  ]
                 }
               ]
             }
@@ -106,7 +99,7 @@
                         "key": {
                           "vec": [
                             {
-                              "symbol": "UserStats"
+                              "symbol": "Admin"
                             },
                             {
                               "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHK3M"
@@ -114,48 +107,7 @@
                           ]
                         },
                         "val": {
-                          "map": [
-                            {
-                              "key": {
-                                "symbol": "badges"
-                              },
-                              "val": {
-                                "vec": [
-                                  {
-                                    "vec": [
-                                      {
-                                        "symbol": "Rookie"
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "level"
-                              },
-                              "val": {
-                                "u32": 1
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "quests_completed"
-                              },
-                              "val": {
-                                "u32": 0
-                              }
-                            },
-                            {
-                              "key": {
-                                "symbol": "xp"
-                              },
-                              "val": {
-                                "u64": 0
-                              }
-                            }
-                          ]
+                          "bool": true
                         }
                       }
                     ]
@@ -320,7 +272,7 @@
                 "bytes": "0000000000000000000000000000000000000000000000000000000000000001"
               },
               {
-                "symbol": "grant_badge"
+                "symbol": "add_admin"
               }
             ],
             "data": {
@@ -330,44 +282,6 @@
                 },
                 {
                   "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHK3M"
-                },
-                {
-                  "vec": [
-                    {
-                      "symbol": "Rookie"
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        }
-      },
-      "failed_call": false
-    },
-    {
-      "event": {
-        "ext": "v0",
-        "contract_id": "0000000000000000000000000000000000000000000000000000000000000001",
-        "type_": "contract",
-        "body": {
-          "v0": {
-            "topics": [
-              {
-                "symbol": "badge_grt"
-              },
-              {
-                "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHK3M"
-              }
-            ],
-            "data": {
-              "vec": [
-                {
-                  "vec": [
-                    {
-                      "symbol": "Rookie"
-                    }
-                  ]
                 }
               ]
             }
@@ -388,7 +302,7 @@
                 "symbol": "fn_return"
               },
               {
-                "symbol": "grant_badge"
+                "symbol": "add_admin"
               }
             ],
             "data": "void"
@@ -412,7 +326,7 @@
                 "bytes": "0000000000000000000000000000000000000000000000000000000000000001"
               },
               {
-                "symbol": "get_user_stats"
+                "symbol": "is_admin"
               }
             ],
             "data": {
@@ -435,52 +349,11 @@
                 "symbol": "fn_return"
               },
               {
-                "symbol": "get_user_stats"
+                "symbol": "is_admin"
               }
             ],
             "data": {
-              "map": [
-                {
-                  "key": {
-                    "symbol": "badges"
-                  },
-                  "val": {
-                    "vec": [
-                      {
-                        "vec": [
-                          {
-                            "symbol": "Rookie"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "level"
-                  },
-                  "val": {
-                    "u32": 1
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "quests_completed"
-                  },
-                  "val": {
-                    "u32": 0
-                  }
-                },
-                {
-                  "key": {
-                    "symbol": "xp"
-                  },
-                  "val": {
-                    "u64": 0
-                  }
-                }
-              ]
+              "bool": true
             }
           }
         }

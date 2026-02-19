@@ -3,6 +3,7 @@
 mod admin;
 pub mod errors;
 mod events;
+mod security;
 mod payout;
 mod reputation;
 pub mod storage;
@@ -26,11 +27,13 @@ impl EarnQuestContract {
 
     /// Add a new admin (admin only)
     pub fn add_admin(env: Env, caller: Address, new_admin: Address) -> Result<(), Error> {
+        security::require_not_paused(&env)?;
         admin::add_admin(&env, &caller, &new_admin)
     }
 
     /// Remove an admin (admin only)
     pub fn remove_admin(env: Env, caller: Address, admin_to_remove: Address) -> Result<(), Error> {
+        security::require_not_paused(&env)?;
         admin::remove_admin(&env, &caller, &admin_to_remove)
     }
 
@@ -49,6 +52,7 @@ impl EarnQuestContract {
         verifier: Address,
         deadline: u64,
     ) -> Result<(), Error> {
+        security::require_not_paused(&env)?;
         creator.require_auth();
 
         if storage::has_quest(&env, &id) {
@@ -93,6 +97,7 @@ impl EarnQuestContract {
         submitter: Address,
         proof_hash: BytesN<32>,
     ) -> Result<(), Error> {
+        security::require_not_paused(&env)?;
         submitter.require_auth();
 
         // Verify quest exists
@@ -122,6 +127,7 @@ impl EarnQuestContract {
         verifier: Address,
     ) -> Result<(), Error> {
         // Auth check
+        security::require_not_paused(&env)?;
         verifier.require_auth();
 
         let quest = storage::get_quest(&env, &quest_id)?;
@@ -148,6 +154,7 @@ impl EarnQuestContract {
     /// Claim approved reward for a completed quest
     pub fn claim_reward(env: Env, quest_id: Symbol, submitter: Address) -> Result<(), Error> {
         // 1. Auth
+        security::require_not_paused(&env)?;
         submitter.require_auth();
 
         // 2. Data Retrieval
@@ -192,6 +199,43 @@ impl EarnQuestContract {
 
     /// Grant a badge to a user (admin only)
     pub fn grant_badge(env: Env, admin: Address, user: Address, badge: Badge) -> Result<(), Error> {
+        security::require_not_paused(&env)?;
         reputation::grant_badge(&env, &admin, &user, badge)
+    }
+
+    /// Emergency: pause contract immediately (admin only)
+    pub fn emergency_pause(env: Env, caller: Address) -> Result<(), Error> {
+        security::emergency_pause(&env, &caller)
+    }
+
+    /// Emergency: approve unpause (admin multisig approval)
+    pub fn emergency_approve_unpause(env: Env, caller: Address) -> Result<(), Error> {
+        security::emergency_approve_unpause(&env, &caller)
+    }
+
+    /// Emergency: unpause contract after approvals and timelock
+    pub fn emergency_unpause(env: Env, caller: Address) -> Result<(), Error> {
+        security::emergency_unpause(&env, &caller)
+    }
+
+    /// Emergency withdrawal when paused (admin only)
+    pub fn emergency_withdraw(
+        env: Env,
+        caller: Address,
+        asset: Address,
+        to: Address,
+        amount: i128,
+    ) -> Result<(), Error> {
+        security::emergency_withdraw(&env, &caller, &asset, &to, amount)
+    }
+
+    /// Admin: set unpause approvals threshold
+    pub fn set_unpause_threshold(env: Env, caller: Address, threshold: u32) -> Result<(), Error> {
+        security::set_unpause_threshold(&env, &caller, threshold)
+    }
+
+    /// Admin: set unpause timelock seconds
+    pub fn set_unpause_timelock(env: Env, caller: Address, seconds: u64) -> Result<(), Error> {
+        security::set_unpause_timelock(&env, &caller, seconds)
     }
 }

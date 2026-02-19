@@ -25,4 +25,9 @@ pub enum Error {
     
     // Reputation Errors
     UserStatsNotFound = 40,
+    // Security / Emergency
+    Paused = 50,
+    TimelockNotExpired = 51,
+    AlreadyApproved = 52,
+    InsufficientApprovals = 53,
 }
